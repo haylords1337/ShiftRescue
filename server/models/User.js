@@ -33,8 +33,8 @@ const userSchema = new Schema({
     default: false
   },
   phoneNumber: {
-    type: String,
-    required: true
+    type: Number,
+    required: true,
   }
 });
 

@@ -17,7 +17,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstname] = useState("");
   const [lastName, setLastname] = useState("");
-  const [phoneNumber, setPhonenumber] = useState("");
+  const [phoneNumber, setNumber] = useState("")
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -59,11 +59,11 @@ const Signup = () => {
           value={lastName}
           onChange={e => setLastname(e.target.value)}
         />
-
+        <b></b>
         <PhoneNumberInputGroup
           required
           value={phoneNumber}
-          onChange={e => setPhonenumber(e.target.value)}
+          onChange={e => setNumber(e.target.value)}
         />
 
         <button type="submit" className="my-3 btn btn-lg btn-primary btn-block">
