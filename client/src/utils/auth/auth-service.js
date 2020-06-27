@@ -48,8 +48,7 @@ export const isLoggedIn = () => {
   if (!token.get()) {
     return false;
   }
-  const isNotExpired = token.payload().exp > Date.now() / 1000;
-  return isNotExpired;
+  return token.payload().exp > Date.now() / 1000;
 };
 
 export const user = () => {
@@ -61,4 +60,3 @@ export const user = () => {
 };
 
 export const fetchUserData = () => user();
-

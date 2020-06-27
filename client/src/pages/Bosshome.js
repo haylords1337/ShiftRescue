@@ -8,18 +8,15 @@ const Bosshome = () => {
   const { user, logout } = useAuth();
 
   return (
-<div>
-  <Nav
-  firstName={user.firstName}
-  lastName={user.lastName}
-  />
-  <div className="jumbotron vh-100 vw-100 align-items-center">
+    <div>
+      <Nav firstName={user.firstName} lastName={user.lastName} />
+      <div className="jumbotron vh-100 vw-100 align-items-center">
         <div className="container">
           <div className="above-list">
-          <h1 className="h3"> Hey {user && user.firstName}</h1>
-          <p>Welcome to the Thunder Dome!</p>
-          <br/>
-          <p>Here are your employees:</p>
+            <h1 className="h3"> Hey {user && user.firstName}</h1>
+            <p>Welcome to the Thunder Dome!</p>
+            <br />
+            <p>Here are your employees:</p>
           </div>
           <EmployeeProvider>
             <Schedule />
@@ -29,7 +26,7 @@ const Bosshome = () => {
           </button>
         </div>
       </div>
-</div>
+    </div>
   );
 };
 
