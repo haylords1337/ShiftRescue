@@ -1,45 +1,52 @@
 import axios from "axios";
 import React, { useContext, createContext, useReducer, useEffect } from "react";
 
-const initialEmployState = [];
+const initialEmployState = [
+];
 const defaultEmployValue = {
-  ...initialEmployState
-};
+    ...initialEmployState
+}
 const EmployContext = createContext(defaultEmployValue);
 
 const employeeReducer = (state, action) => {
-  const employee = action.map(employee => ({
-    name: `${employee.firstName} ${employee.lastName}`,
-    email: employee.email,
-    phone: employee.phoneNumber
-  }));
-  return {
-    ...state,
-    employee
-  };
+    const employee = action.map(employee => ({
+        name: `${employee.firstName} ${employee.lastName}`,
+        email: employee.email,
+        phone: employee.phoneNumber
+    }))
+   return {
+       ...state,
+       employee
+       }
+   }
+
+
+ const allemployees = () => {
+
+    return axios.get('/api/allemployees').then(res => {
+        let employees = res.data;
+        return employees
+    })
 };
+ export const EmployeeProvider = props => {
+     const [state, dispatch] = useReducer(employeeReducer, initialEmployState);
 
-const allemployees = () => {
-  return axios.get("/api/allemployees").then(res => res.data);
-};
+     const gatheremployee = () => {
+         allemployees().then(employees =>{
+            dispatch(employees)
 
-export const EmployeeProvider = props => {
-  const [state, dispatch] = useReducer(employeeReducer, initialEmployState);
+         });
 
-  const gatheremployee = () => {
-    allemployees().then(employees => {
-      dispatch(employees);
-    });
-  };
-  useEffect(gatheremployee, []);
+     };
+     useEffect(gatheremployee, []);
 
-  const value = {
-    ...state,
-    gatheremployee
-  };
-  return <EmployContext.Provider value={value} {...props} />;
-};
+     const value = {
+         ...state,
+         gatheremployee
+     };
+     return <EmployContext.Provider value={value} {...props} />;
+ };
 
 export const useGather = () => {
-  return useContext(EmployContext);
-};
+    return useContext(EmployContext);
+  };

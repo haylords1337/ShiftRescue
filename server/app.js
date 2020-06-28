@@ -41,31 +41,31 @@ app.post("/auth/login", (req, res) => {
 app.post("/api/users", (req, res) => {
   const { email, password, firstName, lastName, phoneNumber } = req.body;
   //Fetch from usertable to make sure no duplicates-
-  User.findOne({ email })
-    .then(user => {
-      if (user) {
-        return res.status(BAD_REQUEST).send("Account already exists.");
+  User.findOne({ email }).then(user => {
+    if (user){
+    return res.status(BAD_REQUEST).send("Account already exists.");
+    }
+    User.create({ email, password, firstName, lastName, phoneNumber })
+    .then(user => res.end())
+    .catch(error => {
+      const DUPLICATE_KEY_ERROR_CODE = 11000;
+      const { name, code, path } = error;
+      if (name === "MongoError" && code === DUPLICATE_KEY_ERROR_CODE) {
+        res.status(BAD_REQUEST).send("Email invalid");
       }
-      User.create({ email, password, firstName, lastName, phoneNumber })
-        .then(user => res.end())
-        .catch(error => {
-          const DUPLICATE_KEY_ERROR_CODE = 11000;
-          const { name, code, path } = error;
-          if (name === "MongoError" && code === DUPLICATE_KEY_ERROR_CODE) {
-            res.status(BAD_REQUEST).send("Email invalid");
-          }
-          if (name === "ValidationError") {
-            res.status(BAD_REQUEST).send("Invalid email or password format.");
-          }
-          if (name === "Error" && error.message) {
-            res.status(BAD_REQUEST).send(error.message);
-          }
-          res.status(SERVER_ERROR).end();
-        });
-    })
-    .catch(err => {
-      console.log(err);
+      if (name === "ValidationError") {
+        res.status(BAD_REQUEST).send("Invalid email or password format.");
+      }
+      if (name === "Error" && error.message) {
+        res.status(BAD_REQUEST).send(error.message);
+      }
+      res.status(SERVER_ERROR).end();
     });
+
+})
+  .catch(err => {
+    console.log(err)
+  });
 });
 
 app.get("/api/users/:id", authenticate(), (req, res) => {
@@ -81,9 +81,9 @@ app.get("/api/users/:id", authenticate(), (req, res) => {
   });
 });
 
-app.get("/api/allemployees", (req, res) => {
-  User.find({ boss: false }).then(dbUsers => res.json(dbUsers));
-});
+app.get("/api/allemployees", (req, res) =>{
+  User.find({boss: false}).then(dbUsers => res.json(dbUsers))
+})
 
 // Serve static assets in production only
 if (process.env.NODE_ENV === "production") {

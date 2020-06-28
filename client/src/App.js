@@ -20,7 +20,7 @@ function App() {
           <ProtectedRoute exact path="/boss" onFailureRedirectToPath="/">
             <Bosshome />
           </ProtectedRoute>
-          <Route exact path={["/", "login"]}>
+          <Route exact path={['/', 'login']}>
             <Login />
           </Route>
           <Route exact path="/signup">
