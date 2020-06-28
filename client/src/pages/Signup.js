@@ -17,7 +17,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstname] = useState("");
   const [lastName, setLastname] = useState("");
-  const [phoneNumber, setNumber] = useState("")
+  const [phoneNumber, setNumber] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -41,7 +41,6 @@ const Signup = () => {
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
-        <b></b>
         <PasswordInputGroup
           required
           value={password}
@@ -53,13 +52,11 @@ const Signup = () => {
           value={firstName}
           onChange={e => setFirstname(e.target.value)}
         />
-        <b></b>
         <LastNameInputGroup
           required
           value={lastName}
           onChange={e => setLastname(e.target.value)}
         />
-        <b></b>
         <PhoneNumberInputGroup
           required
           value={phoneNumber}
