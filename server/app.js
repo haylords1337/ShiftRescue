@@ -9,6 +9,8 @@ const {
   NOT_FOUND,
   SERVER_ERROR
 } = require("./utils/http-status-codes");
+const MessagingResponse = require("twilio").twiml.MessagingResponse;
+
 // const cors = require('cors');
 
 const app = express();
@@ -95,16 +97,24 @@ if (process.env.NODE_ENV === "production") {
 app.get("/send-text", (req, res) => {
   const { recipient, textmessage } = req.query;
 
-  const accountSid = "";
-  const authToken = "";
-  const client = require("twilio")(accountSid, authToken);
+  const { TWILIO_ACCOUNTSID } = process.env;
+  const { TWILIO_AUTHTOKEN } = process.env;
+  const client = require("twilio")(TWILIO_ACCOUNTSID, TWILIO_AUTHTOKEN);
   client.messages
     .create({
       body: textmessage,
       to: recipient,
-      from: ""
+      from: "+12058989245"
     })
     .then(message => console.log(message.sid));
+});
+
+app.post("/sms", (req, res) => {
+  const twiml = new MessagingResponse();
+  twiml.message("This is the response back");
+
+  res.writeHead(200, { "Content-Type": "text/xml" });
+  res.end(twiml.toString());
 });
 
 module.exports = { app };

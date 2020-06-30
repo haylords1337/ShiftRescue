@@ -59,8 +59,7 @@ export class TextForm extends Component {
               ).catch(err => console.log(err));
             }}
           >
-            {" "}
-            Send Text{" "}
+            Send Text
           </button>
         </div>
       </div>
