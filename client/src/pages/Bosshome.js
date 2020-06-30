@@ -3,6 +3,7 @@ import { useAuth } from "../utils/auth";
 import Nav from "../components/Nav";
 import Schedule from "../components/Schedules";
 import { EmployeeProvider } from "../utils/getemploy";
+import { TextForm } from "../components/TextField";
 
 const Bosshome = () => {
   const { user, logout } = useAuth();
@@ -26,6 +27,7 @@ const Bosshome = () => {
           </button>
         </div>
       </div>
+      <TextForm />
     </div>
   );
 };

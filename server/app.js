@@ -9,11 +9,13 @@ const {
   NOT_FOUND,
   SERVER_ERROR
 } = require("./utils/http-status-codes");
+// const cors = require('cors');
 
 const app = express();
 app.set("port", process.env.PORT || 3007);
 app.use(logger("dev"));
 app.use(express.json());
+// app.use(cors);
 
 const { initPassport, authenticate } = require("./config/passport");
 initPassport(app, User);
@@ -89,5 +91,20 @@ app.get("/api/allemployees", (req, res) => {
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
+
+app.get("/send-text", (req, res) => {
+  const { recipient, textmessage } = req.query;
+
+  const accountSid = "";
+  const authToken = "";
+  const client = require("twilio")(accountSid, authToken);
+  client.messages
+    .create({
+      body: textmessage,
+      to: recipient,
+      from: ""
+    })
+    .then(message => console.log(message.sid));
+});
 
 module.exports = { app };
