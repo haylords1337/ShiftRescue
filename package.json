@@ -1,5 +1,5 @@
 {
-  "name": "mern-jwt-boilerplate",
+  "name": "shiftrescue",
   "version": "0.1.0",
   "private": true,
   "description": "",
@@ -22,7 +22,6 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^5.2.0",
-    "eslint": "^7.3.1",
     "husky": "^4.2.5",
     "lint-staged": "^9.5.0",
     "nodemon": "^2.0.4",

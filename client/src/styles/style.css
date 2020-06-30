@@ -1,13 +1,23 @@
 .navbar {
   color: rgba(83, 228, 83, 0.959);
   background-color: rgba(24, 23, 23, 0.795);
-  z-index: 10;
 }
-/* .list-group {
-    margin-top: 1000px;
-    z-index: -100;
+.list-group-flush .list-group-item {
+  border-radius: 10px;
+  z-index: 0;
+  background: transparent;
 }
-.above-list{
-    margin-top: 1000px;
-    z-index: 11;
-} */
+.left-25px {
+  margin-left: 25px;
+}
+.round {
+  border: 2px Solid green;
+  border-radius: 50px;
+  z-index: 100;
+}
+.container .round {
+  padding-bottom: 20px;
+}
+.name {
+  text-decoration: underline;
+}

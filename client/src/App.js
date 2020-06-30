@@ -15,7 +15,7 @@ function App() {
       <Router>
         <Switch>
           <ProtectedRoute exact path="/employee" onFailureRedirectToPath="/">
-            <Employeehome />
+            <Bosshome />
           </ProtectedRoute>
           <ProtectedRoute exact path="/boss" onFailureRedirectToPath="/">
             <Bosshome />
