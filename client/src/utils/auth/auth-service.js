@@ -33,12 +33,14 @@ export const addAuthHeader = config => {
 };
 
 export const signup = (email, password, firstName, lastName, phoneNumber) => {
+  const company = companytoken.payload();
   return axios.post("/api/users", {
     email,
     password,
     firstName,
     lastName,
-    phoneNumber
+    phoneNumber,
+    company
   });
 };
 
@@ -66,8 +68,8 @@ export const isLoggedIn = () => {
 };
 
 export const companyCheck = company => {
-  return axios.post("/api/company", { company }).then(res => {
-    companytoken.set(res.data.companytoken);
+  return axios.post("/api/company", { company }).then(({ data }) => {
+    companytoken.set(data.CompanyCode);
     return companytoken.payload();
   });
 };

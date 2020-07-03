@@ -123,8 +123,17 @@ export const AuthProvider = props => {
 
   const signup = (email, password, firstName, lastName, phoneNumber) => {
     dispatch({ type: PENDING });
-    AuthService.signup(email, password, firstName, lastName, phoneNumber)
-      .then(() => login(email, password))
+    const companycode = localStorage.getItem("companytoken");
+    console.log(companycode);
+    AuthService.signup(
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber,
+      companycode
+    )
+      .then(() => login(email, password, companycode))
       .catch(error => {
         dispatch({
           type: ERROR,

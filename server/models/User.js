@@ -50,8 +50,9 @@ const companySchema = new Schema({
   Employees: [employeeSchema]
 });
 
-employeeSchema.pre("save", function() {
+companySchema.pre("save", function() {
   if (!this.isModified("password")) {
+    console.log("WE GOT A PROBLEM!");
     return Promise.resolve();
   }
   if (this.password.length < 8) {
@@ -59,8 +60,9 @@ employeeSchema.pre("save", function() {
       new Error("Password must have at least 8 characters")
     );
   }
-  return bcrypt.hash(this.password, SALT_ROUNDS).then(hash => {
-    this.password = hash;
+  return bcrypt.hash(this.Employees.password, SALT_ROUNDS).then(hash => {
+    console.log("WAS HASHED" + hash);
+    this.Employees.password = hash;
   });
 });
 

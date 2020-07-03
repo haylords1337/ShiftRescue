@@ -2,15 +2,17 @@ const express = require("express");
 const path = require("path");
 const logger = require("morgan");
 const jwt = require("./config/jwt");
-const { Company } = require("./models");
+const { Company, Temp } = require("./models");
 const {
   UNAUTHORIZED,
   BAD_REQUEST,
   NOT_FOUND,
   SERVER_ERROR
 } = require("./utils/http-status-codes");
+const bcrypt = require("bcrypt");
 const MessagingResponse = require("twilio").twiml.MessagingResponse;
 
+const SALT_ROUNDS = 8;
 const app = express();
 app.set("port", process.env.PORT || 3007);
 app.use(logger("dev"));
@@ -42,29 +44,47 @@ app.post("/auth/login", (req, res) => {
 });
 
 app.post("/api/users", (req, res) => {
-  const { email, password, firstName, lastName, phoneNumber } = req.body;
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    phoneNumber,
+    company
+  } = req.body;
+  console.log("companycode " + company);
   //Fetch from usertable to make sure no duplicates-
-  User.findOne({ email })
-    .then(user => {
+  Company.findOne({ CompanyCode: company })
+    .then(employees => {
+      const user = filterOne(employees, "email", email);
       if (user) {
         return res.status(BAD_REQUEST).send("Account already exists.");
       }
-      User.create({ email, password, firstName, lastName, phoneNumber })
-        .then(user => res.end())
-        .catch(error => {
-          const DUPLICATE_KEY_ERROR_CODE = 11000;
-          const { name, code, path } = error;
-          if (name === "MongoError" && code === DUPLICATE_KEY_ERROR_CODE) {
-            res.status(BAD_REQUEST).send("Email invalid");
-          }
-          if (name === "ValidationError") {
-            res.status(BAD_REQUEST).send("Invalid email or password format.");
-          }
-          if (name === "Error" && error.message) {
-            res.status(BAD_REQUEST).send(error.message);
-          }
-          res.status(SERVER_ERROR).end();
-        });
+
+      Company.findOne({ CompanyCode: company }).then(results => {
+        Temp.create({ email, password, firstName, lastName, phoneNumber })
+          .then(employee => {
+            results.Employees.push(employee);
+            results.save();
+            Temp.collection.remove();
+            res.end();
+          })
+
+          .catch(error => {
+            const DUPLICATE_KEY_ERROR_CODE = 11000;
+            const { name, code, path } = error;
+            if (name === "MongoError" && code === DUPLICATE_KEY_ERROR_CODE) {
+              res.status(BAD_REQUEST).send("Email invalid");
+            }
+            if (name === "ValidationError") {
+              res.status(BAD_REQUEST).send("Invalid email or password format.");
+            }
+            if (name === "Error" && error.message) {
+              res.status(BAD_REQUEST).send(error.message);
+            }
+            res.status(SERVER_ERROR).end();
+          });
+      });
     })
     .catch(err => {
       console.log(err);
