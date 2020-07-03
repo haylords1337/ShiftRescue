@@ -48,7 +48,7 @@ const Login = () => {
           Log In
         </button>
         <div>
-          <Link to="/signup">Create an account</Link>
+          <Link to="/company">Create an account</Link>
         </div>
         {error && <LoginAlert error={error} />}
       </form>

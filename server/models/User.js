@@ -6,7 +6,7 @@ const SALT_ROUNDS = 8;
 const { Schema } = mongoose;
 const { Types } = Schema;
 
-const userSchema = new Schema({
+const employeeSchema = new Schema({
   email: {
     type: String,
     unique: true,
@@ -38,7 +38,19 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.pre("save", function() {
+const companySchema = new Schema({
+  CompanyName: {
+    type: String,
+    required: true
+  },
+  CompanyCode: {
+    type: String,
+    required: true
+  },
+  Employees: [employeeSchema]
+});
+
+employeeSchema.pre("save", function() {
   if (!this.isModified("password")) {
     return Promise.resolve();
   }
@@ -52,13 +64,13 @@ userSchema.pre("save", function() {
   });
 });
 
-userSchema.methods.verifyPassword = function(password) {
+employeeSchema.methods.verifyPassword = function(password) {
   return bcrypt.compare(password, this.password);
 };
 
-const User = mongoose.model("User", userSchema);
+const Company = mongoose.model("CompanyCodes", companySchema);
 
-module.exports = User;
+module.exports = Company;
 
 // create user and verify password example
 // const email = "testuser3@email.com";

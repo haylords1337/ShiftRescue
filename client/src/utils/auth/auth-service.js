@@ -14,6 +14,14 @@ const token = {
     }
   }
 };
+const companytoken = {
+  get: () => localStorage.getItem("companytoken"),
+  set: companytoken => localStorage.setItem("companytoken", companytoken),
+  clear: () => localStorage.removeItem("companytoken"),
+  payload: () => {
+    return companytoken.get();
+  }
+};
 
 // Interceptor middleware for axios that adds auth token to headers.
 export const addAuthHeader = config => {
@@ -42,7 +50,10 @@ export const login = (email, password) => {
   });
 };
 
-export const logout = () => token.clear();
+export const logout = () => {
+  token.clear();
+  companytoken.clear();
+};
 
 export const isLoggedIn = () => {
   if (!token.get()) {
@@ -51,10 +62,22 @@ export const isLoggedIn = () => {
   return token.payload().exp > Date.now() / 1000;
 };
 
+export const companyCheck = company => {
+  console.log(company);
+  return axios.post("/api/company", { company }).then(res => {
+    // companytoken.set(res.data.companytoken);
+    // return companytoken.payload()
+  });
+};
+
 export const user = () => {
+  console.log(token.payload());
   if (isLoggedIn()) {
     const { id } = token.payload();
-    return axios.get(`/api/users/${id}`).then(res => res.data.user);
+    return axios.get(`/api/users/${id}`).then(res => {
+      console.log(" res is " + res.data.user);
+      return res.data.user;
+    });
   }
   return Promise.resolve(null);
 };

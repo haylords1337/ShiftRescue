@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const logger = require("morgan");
 const jwt = require("./config/jwt");
-const { User } = require("./models");
+const { Company } = require("./models");
 const {
   UNAUTHORIZED,
   BAD_REQUEST,
@@ -11,25 +11,29 @@ const {
 } = require("./utils/http-status-codes");
 const MessagingResponse = require("twilio").twiml.MessagingResponse;
 
-// const cors = require('cors');
-
 const app = express();
 app.set("port", process.env.PORT || 3007);
 app.use(logger("dev"));
 app.use(express.json());
-// app.use(cors);
 
 const { initPassport, authenticate } = require("./config/passport");
-initPassport(app, User);
+const { filterOne } = require("./findOne");
+console.log(Object.keys(Company.db.collections));
+initPassport(app, Company);
 
 app.post("/auth/login", (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email })
-    .then(user => {
+  console.log("this is req.body " + email);
+  Company.findOne({ CompanyCode: "E2H1" })
+    .then(employees => {
+      let user = filterOne(employees, "email", email);
+      console.log("user " + user);
       if (user) {
         return user.verifyPassword(password).then(isVerified => {
           if (isVerified) {
+            // console.log("id " + user.id)
             const jwtPayload = { id: user.id };
+            // console.log("jwt is " + jwtPayload)
             return res.json({ token: jwt.sign(jwtPayload) });
           }
           return Promise.reject();
@@ -75,9 +79,15 @@ app.post("/api/users", (req, res) => {
 app.get("/api/users/:id", authenticate(), (req, res) => {
   // prevent logged in user from accessing other user accounts
   if (req.user.id !== req.params.id) {
-    return res.status(UNAUTHORIZED).send("Unauthorized");
+    console.log(req.params.id);
+    console.log(req.user.id);
+
+    return res.status(UNAUTHORIZED).send("Unauthorized" + req.user.id);
   }
-  return User.findById(req.params.id).then(user => {
+  return Company.findOne({ CompanyCode: "E2H1" }).then(employees => {
+    let user = filterOne(employees, "id", req.params.id);
+    console.log("this is employee ");
+
     if (user) {
       return res.json({ user });
     }
@@ -107,6 +117,21 @@ app.get("/send-text", (req, res) => {
       from: "+12058989245"
     })
     .then(message => console.log(message.sid));
+});
+app.post("/api/company", (req, res) => {
+  console.log(req.body);
+  const { company } = req.body;
+  Company.findOne({ CompanyCode: company })
+    .then(company => {
+      if (company) {
+        return res.json(company);
+      }
+      return Promise.reject();
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(UNAUTHORIZED).send("Unauthorized");
+    });
 });
 
 app.post("/sms", (req, res) => {
