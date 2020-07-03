@@ -42,12 +42,15 @@ export const signup = (email, password, firstName, lastName, phoneNumber) => {
   });
 };
 
-export const login = (email, password) => {
-  return axios.post("/auth/login", { email, password }).then(res => {
-    token.set(res.data.token);
+export const login = (email, password, companycode) => {
+  return axios
+    .post("/auth/login", { email, password, companycode })
+    .then(res => {
+      token.set(res.data.token);
+      companytoken.set(companycode);
 
-    return token.payload();
-  });
+      return token.payload();
+    });
 };
 
 export const logout = () => {
@@ -63,19 +66,16 @@ export const isLoggedIn = () => {
 };
 
 export const companyCheck = company => {
-  console.log(company);
   return axios.post("/api/company", { company }).then(res => {
-    // companytoken.set(res.data.companytoken);
-    // return companytoken.payload()
+    companytoken.set(res.data.companytoken);
+    return companytoken.payload();
   });
 };
 
 export const user = () => {
-  console.log(token.payload());
   if (isLoggedIn()) {
     const { id } = token.payload();
     return axios.get(`/api/users/${id}`).then(res => {
-      console.log(" res is " + res.data.user);
       return res.data.user;
     });
   }

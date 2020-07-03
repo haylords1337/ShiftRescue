@@ -11,12 +11,10 @@ const Company = () => {
   const [companycode, setCompanycode] = useState("");
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(companycode);
     companyVerify(companycode);
   };
 
   if (isaCompany) {
-    console.log(isaCompany);
     return <Redirect to="/signup" />;
   }
 

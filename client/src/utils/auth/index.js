@@ -101,9 +101,9 @@ export const AuthProvider = props => {
   };
   useEffect(initAuth, []);
 
-  const login = (email, password) => {
+  const login = (email, password, companycode) => {
     dispatch({ type: PENDING });
-    return AuthService.login(email, password)
+    return AuthService.login(email, password, companycode)
       .then(() => AuthService.user())
       .then(user => {
         if (user.boss) {
@@ -134,7 +134,6 @@ export const AuthProvider = props => {
   };
 
   const companyVerify = company => {
-    console.log(company);
     return AuthService.companyCheck(company)
       .then(dispatch({ type: COMPANY_VERIFIED }))
       .catch(error => {

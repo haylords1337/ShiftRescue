@@ -17,23 +17,18 @@ app.use(logger("dev"));
 app.use(express.json());
 
 const { initPassport, authenticate } = require("./config/passport");
-const { filterOne } = require("./findOne");
-console.log(Object.keys(Company.db.collections));
+const { filterOne } = require("./controller/findOne");
 initPassport(app, Company);
 
 app.post("/auth/login", (req, res) => {
-  const { email, password } = req.body;
-  console.log("this is req.body " + email);
-  Company.findOne({ CompanyCode: "E2H1" })
+  const { email, password, companycode } = req.body;
+  Company.findOne({ CompanyCode: companycode })
     .then(employees => {
       let user = filterOne(employees, "email", email);
-      console.log("user " + user);
       if (user) {
         return user.verifyPassword(password).then(isVerified => {
           if (isVerified) {
-            // console.log("id " + user.id)
             const jwtPayload = { id: user.id };
-            // console.log("jwt is " + jwtPayload)
             return res.json({ token: jwt.sign(jwtPayload) });
           }
           return Promise.reject();
@@ -79,14 +74,10 @@ app.post("/api/users", (req, res) => {
 app.get("/api/users/:id", authenticate(), (req, res) => {
   // prevent logged in user from accessing other user accounts
   if (req.user.id !== req.params.id) {
-    console.log(req.params.id);
-    console.log(req.user.id);
-
     return res.status(UNAUTHORIZED).send("Unauthorized" + req.user.id);
   }
   return Company.findOne({ CompanyCode: "E2H1" }).then(employees => {
     let user = filterOne(employees, "id", req.params.id);
-    console.log("this is employee ");
 
     if (user) {
       return res.json({ user });
@@ -95,8 +86,16 @@ app.get("/api/users/:id", authenticate(), (req, res) => {
   });
 });
 
-app.get("/api/allemployees", (req, res) => {
-  User.find({ boss: false }).then(dbUsers => res.json(dbUsers));
+app.post("/api/allemployees", (req, res) => {
+  const { companycode } = req.body;
+  Company.findOne({ CompanyCode: companycode }).then(({ Employees }) => {
+    const employees = Employees.filter(employees => {
+      if (!employees.boss) {
+        return employees;
+      }
+    });
+    res.json(employees);
+  });
 });
 
 // Serve static assets in production only
@@ -119,7 +118,6 @@ app.get("/send-text", (req, res) => {
     .then(message => console.log(message.sid));
 });
 app.post("/api/company", (req, res) => {
-  console.log(req.body);
   const { company } = req.body;
   Company.findOne({ CompanyCode: company })
     .then(company => {
