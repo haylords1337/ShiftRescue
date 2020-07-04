@@ -9,10 +9,8 @@ const {
   NOT_FOUND,
   SERVER_ERROR
 } = require("./utils/http-status-codes");
-const bcrypt = require("bcrypt");
 const MessagingResponse = require("twilio").twiml.MessagingResponse;
 
-const SALT_ROUNDS = 8;
 const app = express();
 app.set("port", process.env.PORT || 3007);
 app.use(logger("dev"));

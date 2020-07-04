@@ -72,6 +72,7 @@ const authReducer = (state, action) => {
     case COMPANY_VERIFIED:
       return {
         ...state,
+        error: "",
         isaCompany: true
       };
     default:
@@ -144,7 +145,11 @@ export const AuthProvider = props => {
 
   const companyVerify = company => {
     return AuthService.companyCheck(company)
-      .then(dispatch({ type: COMPANY_VERIFIED }))
+      .then(code => {
+        if (company !== null) {
+          dispatch({ type: COMPANY_VERIFIED });
+        }
+      })
       .catch(error => {
         console.log(error);
         dispatch({

@@ -32,15 +32,21 @@ export const addAuthHeader = config => {
   return config;
 };
 
-export const signup = (email, password, firstName, lastName, phoneNumber) => {
-  const company = companytoken.payload();
+export const signup = (
+  email,
+  password,
+  firstName,
+  lastName,
+  phoneNumber,
+  companycode
+) => {
   return axios.post("/api/users", {
     email,
     password,
     firstName,
     lastName,
     phoneNumber,
-    company
+    companycode
   });
 };
 

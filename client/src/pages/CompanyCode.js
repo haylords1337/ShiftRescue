@@ -39,7 +39,7 @@ const Company = () => {
         <div>
           <Link to="/login">Return to Login</Link>
         </div>
-        {/* {error && <CompanyAlert error={error} />} */}
+        {error && <LoginAlert error={error} />}
       </form>
     </div>
   );
