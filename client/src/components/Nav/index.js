@@ -8,7 +8,7 @@ const Nav = props => {
 
     if (user) {
       return (
-        <div clasName="nav-item btn-group">
+        <div className="nav-item btn-group">
           <button
             type="button"
             className="btn btn-success dropdown-toggle"
@@ -25,7 +25,7 @@ const Nav = props => {
             <button className="dropdown-item" type="button">
               Rescue Shift
             </button>
-            <div role="separator" clasName="dropdown-divider"></div>
+            <div role="separator" className="dropdown-divider"></div>
             <button
               className="dropdown-item logout"
               type="button"

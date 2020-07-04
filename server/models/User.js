@@ -52,7 +52,6 @@ const companySchema = new Schema({
 
 companySchema.pre("save", function() {
   if (!this.isModified("password")) {
-    console.log("WE GOT A PROBLEM!");
     return Promise.resolve();
   }
   if (this.password.length < 8) {
@@ -61,7 +60,6 @@ companySchema.pre("save", function() {
     );
   }
   return bcrypt.hash(this.Employees.password, SALT_ROUNDS).then(hash => {
-    console.log("WAS HASHED" + hash);
     this.Employees.password = hash;
   });
 });

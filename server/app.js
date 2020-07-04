@@ -50,7 +50,6 @@ app.post("/api/users", (req, res) => {
     phoneNumber,
     companycode
   } = req.body;
-  console.log("companycode " + companycode);
   //Fetch from usertable to make sure no duplicates-
   Company.findOne({ CompanyCode: companycode })
     .then(employees => {
