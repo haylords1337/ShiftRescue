@@ -6,7 +6,7 @@ const SALT_ROUNDS = 8;
 const { Schema } = mongoose;
 const { Types } = Schema;
 
-const employeeSchema = new Schema({
+const tempuserSchema = new Schema({
   email: {
     type: String,
     unique: true,
@@ -38,21 +38,8 @@ const employeeSchema = new Schema({
   }
 });
 
-const companySchema = new Schema({
-  CompanyName: {
-    type: String,
-    required: true
-  },
-  CompanyCode: {
-    type: String,
-    required: true
-  },
-  Employees: [employeeSchema]
-});
-
-companySchema.pre("save", function() {
+tempuserSchema.pre("save", function() {
   if (!this.isModified("password")) {
-    console.log("WE GOT A PROBLEM!");
     return Promise.resolve();
   }
   if (this.password.length < 8) {
@@ -60,19 +47,18 @@ companySchema.pre("save", function() {
       new Error("Password must have at least 8 characters")
     );
   }
-  return bcrypt.hash(this.Employees.password, SALT_ROUNDS).then(hash => {
-    console.log("WAS HASHED" + hash);
-    this.Employees.password = hash;
+  return bcrypt.hash(this.password, SALT_ROUNDS).then(hash => {
+    this.password = hash;
   });
 });
 
-employeeSchema.methods.verifyPassword = function(password) {
+tempuserSchema.methods.verifyPassword = function(password) {
   return bcrypt.compare(password, this.password);
 };
 
-const Company = mongoose.model("CompanyCodes", companySchema);
+const Temp = mongoose.model("Temp", tempuserSchema);
 
-module.exports = Company;
+module.exports = Temp;
 
 // create user and verify password example
 // const email = "testuser3@email.com";

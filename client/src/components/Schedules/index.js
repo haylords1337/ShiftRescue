@@ -4,14 +4,15 @@ import { useGather } from "../../utils/getemploy";
 
 const Schedule = () => {
   const { employee } = useGather();
+  const chkavail = "";
   return (
-    <div className="container">
-      <h1 className="above-list">Employee Schedules:</h1>
-      <ul className="list-group list-group-flush">
+    <div className="container round">
+      <h1 className="left-25px">Employee Schedules:</h1>
+      <ul className="list-group list-group-flush round">
         {employee &&
           employee.map(employ => (
             <li className="list-group-item" key={employ.name}>
-              <h3>{employ.name}</h3>
+              <h3 className="name">{employ.name}</h3>
               <h5>Email:</h5>
               <p>{employ.email}</p>
               <h5>Phone Number:</h5>
@@ -19,6 +20,9 @@ const Schedule = () => {
             </li>
           ))}
       </ul>
+      <button className="btn btn-primary" onClick={chkavail}>
+        Check Availble Employees
+      </button>
     </div>
   );
 };

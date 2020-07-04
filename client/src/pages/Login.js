@@ -6,16 +6,18 @@ import FullPageSpinner from "../components/FullPageSpinner";
 import LoginAlert from "../components/LoginAlert";
 import {
   EmailInputGroup,
-  PasswordInputGroup
+  PasswordInputGroup,
+  CompanyCodeInputGroup
 } from "../components/FormControls";
 
 const Login = () => {
   const { login, isPending, isLoggedIn, isBoss, error } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [companycode, setCompanyCode] = useState("");
   const handleSubmit = e => {
     e.preventDefault();
-    login(email, password);
+    login(email, password, companycode);
   };
 
   if (isLoggedIn) {
@@ -44,11 +46,16 @@ const Login = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
+        <CompanyCodeInputGroup
+          required
+          value={companycode}
+          onChange={e => setCompanyCode(e.target.value)}
+        />
         <button type="submit" className="my-3 btn btn-lg btn-primary btn-block">
           Log In
         </button>
         <div>
-          <Link to="/signup">Create an account</Link>
+          <Link to="/company">Create an account</Link>
         </div>
         {error && <LoginAlert error={error} />}
       </form>

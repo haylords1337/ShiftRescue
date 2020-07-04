@@ -5,7 +5,8 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   PENDING,
-  BOSS_LOGIN_SUCCESS
+  BOSS_LOGIN_SUCCESS,
+  COMPANY_VERIFIED
 } from "./actions";
 
 export * from "./auth-service";
@@ -15,6 +16,7 @@ const initialAuthState = {
   user: null,
   isBoss: false,
   isPending: false,
+  isaCompany: false,
   error: ""
 };
 
@@ -22,7 +24,8 @@ const defaultAuthValue = {
   ...initialAuthState,
   login: () => {},
   logout: () => {},
-  signup: () => {}
+  signup: () => {},
+  companyVerify: () => {}
 };
 
 const AuthContext = createContext(defaultAuthValue);
@@ -63,7 +66,14 @@ const authReducer = (state, action) => {
         isBoss: false,
         isLoggedIn: false,
         isPending: false,
-        user: null
+        user: null,
+        isaCompany: false
+      };
+    case COMPANY_VERIFIED:
+      return {
+        ...state,
+        error: "",
+        isaCompany: true
       };
     default:
       throw new Error(`Invalid action: ${action.type}`);
@@ -92,9 +102,9 @@ export const AuthProvider = props => {
   };
   useEffect(initAuth, []);
 
-  const login = (email, password) => {
+  const login = (email, password, companycode) => {
     dispatch({ type: PENDING });
-    return AuthService.login(email, password)
+    return AuthService.login(email, password, companycode)
       .then(() => AuthService.user())
       .then(user => {
         if (user.boss) {
@@ -114,13 +124,37 @@ export const AuthProvider = props => {
 
   const signup = (email, password, firstName, lastName, phoneNumber) => {
     dispatch({ type: PENDING });
-    AuthService.signup(email, password, firstName, lastName, phoneNumber)
-      .then(() => login(email, password))
+    const companycode = localStorage.getItem("companytoken");
+    console.log(companycode);
+    AuthService.signup(
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber,
+      companycode
+    )
+      .then(() => login(email, password, companycode))
+      .catch(error => {
+        dispatch({
+          type: ERROR,
+          error: "Invalid email and password or account already exists."
+        });
+      });
+  };
+
+  const companyVerify = company => {
+    return AuthService.companyCheck(company)
+      .then(code => {
+        if (company !== null) {
+          dispatch({ type: COMPANY_VERIFIED });
+        }
+      })
       .catch(error => {
         console.log(error);
         dispatch({
           type: ERROR,
-          error: "Invalid email and password or account already exists."
+          error: "Invalid company name"
         });
       });
   };
@@ -129,7 +163,8 @@ export const AuthProvider = props => {
     ...state,
     login,
     logout,
-    signup
+    signup,
+    companyVerify
   };
 
   return <AuthContext.Provider value={value} {...props} />;

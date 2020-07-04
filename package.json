@@ -1,5 +1,5 @@
 {
-  "name": "mern-jwt-boilerplate",
+  "name": "shiftrescue",
   "version": "0.1.0",
   "private": true,
   "description": "",
@@ -24,7 +24,6 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^5.2.0",
-    "eslint": "^6.6.0",
     "husky": "^4.2.5",
     "jest": "^24.9.0",
     "lint-staged": "^9.5.0",
@@ -46,16 +45,19 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
     "cross-env": "^6.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "http": "0.0.1-security",
     "if-env": "^1.0.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.20",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "twilio": "^3.47.0"
   },
   "jest": {
     "testEnvironment": "node",

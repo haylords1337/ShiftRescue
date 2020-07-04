@@ -20,7 +20,8 @@ const employeeReducer = (state, action) => {
 };
 
 const allemployees = () => {
-  return axios.get("/api/allemployees").then(res => res.data);
+  const companycode = localStorage.getItem("companytoken");
+  return axios.post("/api/allemployees", { companycode }).then(res => res.data);
 };
 
 export const EmployeeProvider = props => {

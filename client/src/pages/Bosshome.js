@@ -3,6 +3,7 @@ import { useAuth } from "../utils/auth";
 import Nav from "../components/Nav";
 import Schedule from "../components/Schedules";
 import { EmployeeProvider } from "../utils/getemploy";
+import { TextForm } from "../components/TextField";
 
 const Bosshome = () => {
   const { user, logout } = useAuth();
@@ -10,7 +11,7 @@ const Bosshome = () => {
   return (
     <div>
       <Nav firstName={user.firstName} lastName={user.lastName} />
-      <div className="jumbotron vh-100 vw-100 align-items-center">
+      <div className="jumbotron vw-100 align-items-center">
         <div className="container">
           <div className="above-list">
             <h1 className="h3"> Hey {user && user.firstName}</h1>
@@ -21,11 +22,12 @@ const Bosshome = () => {
           <EmployeeProvider>
             <Schedule />
           </EmployeeProvider>
-          <button className="btn btn-primary btn-block" onClick={logout}>
+          <button className="btn btn-primary" onClick={logout}>
             Logout
           </button>
         </div>
       </div>
+      <TextForm />
     </div>
   );
 };
