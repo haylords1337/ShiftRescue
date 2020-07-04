@@ -7,7 +7,7 @@ import LoginAlert from "../components/LoginAlert";
 import { CompanyCodeInputGroup } from "../components/FormControls";
 
 const Company = () => {
-  const { companyVerify, isPending, isaCompany, isBoss, error } = useAuth();
+  const { companyVerify, isPending, isaCompany, error } = useAuth();
   const [companycode, setCompanycode] = useState("");
   const handleSubmit = e => {
     e.preventDefault();

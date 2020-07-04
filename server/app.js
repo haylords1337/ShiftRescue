@@ -48,23 +48,23 @@ app.post("/api/users", (req, res) => {
     firstName,
     lastName,
     phoneNumber,
-    company
+    companycode
   } = req.body;
-  console.log("companycode " + company);
+  console.log("companycode " + companycode);
   //Fetch from usertable to make sure no duplicates-
-  Company.findOne({ CompanyCode: company })
+  Company.findOne({ CompanyCode: companycode })
     .then(employees => {
       const user = filterOne(employees, "email", email);
       if (user) {
         return res.status(BAD_REQUEST).send("Account already exists.");
       }
 
-      Company.findOne({ CompanyCode: company }).then(results => {
+      Company.findOne({ CompanyCode: companycode }).then(results => {
         Temp.create({ email, password, firstName, lastName, phoneNumber })
           .then(employee => {
             results.Employees.push(employee);
             results.save();
-            Temp.collection.remove();
+            Temp.remove().exec();
             res.end();
           })
 
