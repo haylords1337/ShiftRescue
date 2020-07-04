@@ -20,7 +20,7 @@ const Schedule = () => {
             </li>
           ))}
       </ul>
-      <button className="btn btn-primary" onClick={chkavail}>
+      <button className="btn btn-success" onClick={chkavail}>
         Check Availble Employees
       </button>
     </div>

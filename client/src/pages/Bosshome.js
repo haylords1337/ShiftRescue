@@ -6,7 +6,7 @@ import { EmployeeProvider } from "../utils/getemploy";
 import { TextForm } from "../components/TextField";
 
 const Bosshome = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div>
@@ -17,14 +17,10 @@ const Bosshome = () => {
             <h1 className="h3"> Hey {user && user.firstName}</h1>
             <p>Welcome to the Thunder Dome!</p>
             <br />
-            <p>Here are your employees:</p>
           </div>
           <EmployeeProvider>
             <Schedule />
           </EmployeeProvider>
-          <button className="btn btn-primary" onClick={logout}>
-            Logout
-          </button>
         </div>
       </div>
       <TextForm />
