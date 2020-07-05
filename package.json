@@ -57,7 +57,8 @@
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "twilio": "^3.47.0"
+    "twilio": "^3.47.0",
+    "twilio-cli": "^2.4.0"
   },
   "jest": {
     "testEnvironment": "node",

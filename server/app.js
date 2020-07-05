@@ -104,7 +104,7 @@ app.get("/send-text", (req, res) => {
     .create({
       body: textmessage,
       to: recipient,
-      from: "+12058989245"
+      from: "+12058906455"
     })
     .then(message => console.log(message.sid));
 });
