@@ -8,23 +8,26 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Employeehome from "./pages/Employeehome";
 import Bosshome from "./pages/Bosshome";
-
+import Company from "./pages/CompanyCode";
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Switch>
           <ProtectedRoute exact path="/employee" onFailureRedirectToPath="/">
-            <Bosshome />
+            <Employeehome />
           </ProtectedRoute>
           <ProtectedRoute exact path="/boss" onFailureRedirectToPath="/">
             <Bosshome />
           </ProtectedRoute>
-          <Route exact path={["/", "login"]}>
+          <Route exact path={["/", "/login"]}>
             <Login />
           </Route>
           <Route exact path="/signup">
             <Signup />
+          </Route>
+          <Route exact path="/company">
+            <Company />
           </Route>
         </Switch>
       </Router>

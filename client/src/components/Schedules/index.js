@@ -11,7 +11,7 @@ const Schedule = () => {
       <ul className="list-group list-group-flush round">
         {employee &&
           employee.map(employ => (
-            <li className="list-group-item" key={employ.name}>
+            <li className="list-group-item" key={employ.email}>
               <h3 className="name">{employ.name}</h3>
               <h5>Email:</h5>
               <p>{employ.email}</p>
@@ -20,7 +20,7 @@ const Schedule = () => {
             </li>
           ))}
       </ul>
-      <button className="btn btn-primary" onClick={chkavail}>
+      <button className="btn btn-success" onClick={chkavail}>
         Check Availble Employees
       </button>
     </div>

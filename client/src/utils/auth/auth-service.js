@@ -14,6 +14,14 @@ const token = {
     }
   }
 };
+const companytoken = {
+  get: () => localStorage.getItem("companytoken"),
+  set: companytoken => localStorage.setItem("companytoken", companytoken),
+  clear: () => localStorage.removeItem("companytoken"),
+  payload: () => {
+    return companytoken.get();
+  }
+};
 
 // Interceptor middleware for axios that adds auth token to headers.
 export const addAuthHeader = config => {
@@ -24,25 +32,39 @@ export const addAuthHeader = config => {
   return config;
 };
 
-export const signup = (email, password, firstName, lastName, phoneNumber) => {
+export const signup = (
+  email,
+  password,
+  firstName,
+  lastName,
+  phoneNumber,
+  companycode
+) => {
   return axios.post("/api/users", {
     email,
     password,
     firstName,
     lastName,
-    phoneNumber
+    phoneNumber,
+    companycode
   });
 };
 
-export const login = (email, password) => {
-  return axios.post("/auth/login", { email, password }).then(res => {
-    token.set(res.data.token);
+export const login = (email, password, companycode) => {
+  return axios
+    .post("/auth/login", { email, password, companycode })
+    .then(res => {
+      token.set(res.data.token);
+      companytoken.set(companycode);
 
-    return token.payload();
-  });
+      return token.payload();
+    });
 };
 
-export const logout = () => token.clear();
+export const logout = () => {
+  token.clear();
+  companytoken.clear();
+};
 
 export const isLoggedIn = () => {
   if (!token.get()) {
@@ -51,10 +73,19 @@ export const isLoggedIn = () => {
   return token.payload().exp > Date.now() / 1000;
 };
 
+export const companyCheck = company => {
+  return axios.post("/api/company", { company }).then(({ data }) => {
+    companytoken.set(data.CompanyCode);
+    return companytoken.payload();
+  });
+};
+
 export const user = () => {
   if (isLoggedIn()) {
     const { id } = token.payload();
-    return axios.get(`/api/users/${id}`).then(res => res.data.user);
+    return axios.get(`/api/users/${id}`).then(res => {
+      return res.data.user;
+    });
   }
   return Promise.resolve(null);
 };

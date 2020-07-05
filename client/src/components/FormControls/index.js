@@ -62,3 +62,13 @@ export const PhoneNumberInputGroup = props => (
     {...props}
   />
 );
+export const CompanyCodeInputGroup = props => (
+  <BaseInputGroup
+    labelText={"Company Code"}
+    id="CompanyCode"
+    name="CompanyCode"
+    type="CompanyCode"
+    className="form-control"
+    {...props}
+  />
+);

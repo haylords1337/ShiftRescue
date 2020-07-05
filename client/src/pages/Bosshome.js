@@ -4,11 +4,9 @@ import Nav from "../components/Nav";
 import Schedule from "../components/Schedules";
 import { EmployeeProvider } from "../utils/getemploy";
 import { TextForm } from "../components/TextField";
-import { useText } from "../utils/text";
 
 const Bosshome = () => {
-  const { user, logout } = useAuth();
-  const { sendText, text } = useText();
+  const { user } = useAuth();
 
   return (
     <div>
@@ -19,20 +17,10 @@ const Bosshome = () => {
             <h1 className="h3"> Hey {user && user.firstName}</h1>
             <p>Welcome to the Thunder Dome!</p>
             <br />
-            <p>Here are your employees:</p>
           </div>
           <EmployeeProvider>
             <Schedule />
           </EmployeeProvider>
-          <button className="btn btn-primary" onClick={logout}>
-            Logout
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={sendText(`+1${user.phoneNumber}`, text.textmessage)}
-          >
-            Send Text
-          </button>
         </div>
       </div>
       <TextForm />

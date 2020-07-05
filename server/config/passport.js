@@ -1,6 +1,7 @@
 const passport = require("passport");
 const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
 const jwtConfig = require("./jwt");
+const { filterOne } = require("../controller/findOne");
 
 const initPassport = (app, User) => {
   const options = {
@@ -8,8 +9,11 @@ const initPassport = (app, User) => {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
   };
   const verify = (payload, done) => {
-    User.findById(payload.id)
-      .then(user => done(null, user || false))
+    User.findOne({ CompanyCode: "E2H1" })
+      .then(employee => {
+        let user = filterOne(employee, "id", payload.id);
+        done(null, user || false);
+      })
       .catch(done);
   };
   const strategy = new JwtStrategy(options, verify);
