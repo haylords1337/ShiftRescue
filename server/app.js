@@ -50,7 +50,6 @@ app.post("/api/users", (req, res) => {
     phoneNumber,
     companycode
   } = req.body;
-  console.log("companycode " + companycode);
   //Fetch from usertable to make sure no duplicates-
   Company.findOne({ CompanyCode: companycode })
     .then(employees => {
@@ -121,20 +120,6 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
-app.get("/send-text", (req, res) => {
-  const { recipient, textmessage } = req.query;
-
-  const { TWILIO_ACCOUNTSID } = process.env;
-  const { TWILIO_AUTHTOKEN } = process.env;
-  const client = require("twilio")(TWILIO_ACCOUNTSID, TWILIO_AUTHTOKEN);
-  client.messages
-    .create({
-      body: textmessage,
-      to: recipient,
-      from: "+12058989245"
-    })
-    .then(message => console.log(message.sid));
-});
 app.post("/api/company", (req, res) => {
   const { company } = req.body;
   Company.findOne({ CompanyCode: company })
@@ -148,6 +133,36 @@ app.post("/api/company", (req, res) => {
       console.log(error);
       res.status(UNAUTHORIZED).send("Unauthorized");
     });
+});
+app.post("/send-text", (req, res) => {
+  const { recipient } = req.body;
+  const { TWILIO_ACCOUNTSID } = process.env;
+  const { TWILIO_AUTHTOKEN } = process.env;
+  const client = require("twilio")(TWILIO_ACCOUNTSID, TWILIO_AUTHTOKEN);
+  client.messages
+    .create({
+      body: "A Shift is available! Would you like to take it? Reply YES or NO",
+      to: recipient,
+      from: "+12058906455"
+    })
+    .then(message => console.log(message.sid));
+});
+
+app.post("/conversation", (req, res) => {
+  const { recipient } = req.body;
+  const { TWILIO_ACCOUNTSID } = process.env;
+  const { TWILIO_AUTHTOKEN } = process.env;
+  const client = require("twilio")(TWILIO_ACCOUNTSID, TWILIO_AUTHTOKEN);
+
+  client.conversations
+    .conversations("CHa36779d0d789479f8320053cc65ad90a")
+    .messages.create({
+      body: "A Shift is available! Would you like to take it? Reply YES or NO",
+      to: recipient,
+      from: "+12058906455"
+    })
+    .then(message => console.log(message.sid));
+  // .participants('MB3dfd782ae0bb4f2a931633848d2db517')
 });
 
 app.post("/sms", (req, res) => {

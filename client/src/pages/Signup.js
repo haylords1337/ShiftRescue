@@ -63,7 +63,7 @@ const Signup = () => {
           onChange={e => setNumber(e.target.value)}
         />
 
-        <button type="submit" className="my-3 btn btn-lg btn-primary btn-block">
+        <button type="submit" className="my-3 btn btn-lg btn-success btn-block">
           Sign up
         </button>
         <div>

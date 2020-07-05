@@ -21,3 +21,25 @@
 .name {
   text-decoration: underline;
 }
+.jumbotron {
+  background-color: rgb(151, 151, 151);
+}
+#root {
+  background-color: rgb(151, 151, 151);
+}
+a {
+  color: #106e25;
+}
+.btn-success {
+  color: #fff;
+  background-color: #217c35;
+  border-color: #217c35;
+}
+.dropdown-menu {
+  background-color: #707d6c;
+}
+.logout {
+  color: #aa1a28;
+  font-weight: 700;
+  text-decoration: underline;
+}

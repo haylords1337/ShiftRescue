@@ -125,7 +125,6 @@ export const AuthProvider = props => {
   const signup = (email, password, firstName, lastName, phoneNumber) => {
     dispatch({ type: PENDING });
     const companycode = localStorage.getItem("companytoken");
-    console.log(companycode);
     AuthService.signup(
       email,
       password,
