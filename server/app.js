@@ -63,7 +63,8 @@ app.post("/api/users", (req, res) => {
           .then(employee => {
             results.Employees.push(employee);
             results.save();
-            Temp.remove().exec();
+            // Dustin: ???
+            Temp.deleteOne().exec();
             res.end();
           })
 
