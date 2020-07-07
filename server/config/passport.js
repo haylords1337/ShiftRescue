@@ -9,6 +9,7 @@ const initPassport = (app, User) => {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
   };
   const verify = (payload, done) => {
+    // TODO: don't hardcode E2H1
     User.findOne({ CompanyCode: "E2H1" })
       .then(employee => {
         let user = filterOne(employee, "id", payload.id);
