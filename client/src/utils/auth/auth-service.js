@@ -40,14 +40,21 @@ export const signup = (
   phoneNumber,
   companycode
 ) => {
-  return axios.post("/api/users", {
-    email,
-    password,
-    firstName,
-    lastName,
-    phoneNumber,
-    companycode
-  });
+  return axios
+    .post("/api/users", {
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber,
+      companycode
+    })
+    .then(res => {
+      console.log(res.status);
+      if (res.status === 200) {
+        axios.post("/addparticpant", { phoneNumber });
+      }
+    });
 };
 
 export const login = (email, password, companycode) => {
