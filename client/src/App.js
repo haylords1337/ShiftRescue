@@ -9,13 +9,14 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Employeehome from "./pages/Employeehome";
 import Bosshome from "./pages/Bosshome";
 import Company from "./pages/CompanyCode";
+import Demo from "./demo";
 function App() {
   return (
     <AuthProvider>
       <Router>
         <Switch>
           <ProtectedRoute exact path="/employee" onFailureRedirectToPath="/">
-            <Employeehome />
+            <Bosshome />
           </ProtectedRoute>
           <ProtectedRoute exact path="/boss" onFailureRedirectToPath="/">
             <Bosshome />
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route exact path="/company">
             <Company />
+          </Route>
+          <Route exact path="/calendar">
+            <Demo />
           </Route>
         </Switch>
       </Router>

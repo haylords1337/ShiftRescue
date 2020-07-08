@@ -3,7 +3,7 @@ import { useAuth } from "../utils/auth";
 import Nav from "../components/Nav";
 import Schedule from "../components/Schedules";
 import { EmployeeProvider } from "../utils/getemploy";
-import { TextForm } from "../components/TextField";
+import { Link } from "react-router-dom";
 
 const Bosshome = () => {
   const { user } = useAuth();
@@ -22,8 +22,8 @@ const Bosshome = () => {
             <Schedule />
           </EmployeeProvider>
         </div>
+        <Link to="/calendar">View Full Calendar</Link>
       </div>
-      <TextForm />
     </div>
   );
 };

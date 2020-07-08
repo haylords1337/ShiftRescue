@@ -6,6 +6,29 @@ const SALT_ROUNDS = 8;
 const { Schema } = mongoose;
 const { Types } = Schema;
 
+const appointSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  startDate: {
+    type: Date,
+    required: true
+  },
+  endDate: {
+    type: Date,
+    required: true
+  },
+  id: {
+    type: Number,
+    required: false
+  },
+  location: {
+    type: String,
+    required: false
+  }
+});
+
 const employeeSchema = new Schema({
   email: {
     type: String,
@@ -35,7 +58,8 @@ const employeeSchema = new Schema({
   phoneNumber: {
     type: Number,
     required: true
-  }
+  },
+  schedule: [appointSchema]
 });
 
 const companySchema = new Schema({

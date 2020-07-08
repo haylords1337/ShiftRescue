@@ -189,13 +189,24 @@ app.post("/addparticpant", (req, res) => {
     })
     .catch(err => console.log(err));
 });
-
-app.post("/sms", (req, res) => {
-  const twiml = new MessagingResponse();
-  twiml.message("This is the response back");
-
-  res.writeHead(200, { "Content-Type": "text/xml" });
-  res.end(twiml.toString());
+app.post("/api/grabshift", (req, res) => {
+  const { companycode, email } = req.body;
+  Company.findOne({ CompanyCode: companycode }).then(({ Employees }) => {
+    const employees = Employees.filter(employees => {
+      if (!employees.boss) {
+        return employees;
+      }
+    });
+    const appts = employees.map(employees => {
+      return employees.schedule.map(appt => {
+        return appt;
+      });
+    });
+    console.log("appt" + appts);
+    res.json(appts);
+  });
 });
+
+app.post("/api/createshift", (req, res) => {});
 
 module.exports = { app };
