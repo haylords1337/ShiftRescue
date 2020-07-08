@@ -22,24 +22,25 @@
   text-decoration: underline;
 }
 .jumbotron {
-  background-color: rgb(151, 151, 151);
+  background-color: #f3f2c7;
 }
 #root {
-  background-color: rgb(151, 151, 151);
+  background-color: #f3f2c7;
 }
-a {
-  color: #106e25;
-}
+
 .btn-success {
   color: #fff;
   background-color: #217c35;
   border-color: #217c35;
 }
 .dropdown-menu {
-  background-color: #707d6c;
+  background-color: #a1ae9d;
+}
+.dropdown-item {
+  color: #fdfdfd;
 }
 .logout {
-  color: #aa1a28;
+  color: #cb2737;
   font-weight: 700;
   text-decoration: underline;
 }

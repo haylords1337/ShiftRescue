@@ -165,13 +165,49 @@ app.post("/conversation", (req, res) => {
     .then(message => console.log(message.sid));
   // .participants('MB3dfd782ae0bb4f2a931633848d2db517')
 });
-
-app.post("/sms", (req, res) => {
-  const twiml = new MessagingResponse();
-  twiml.message("This is the response back");
-
-  res.writeHead(200, { "Content-Type": "text/xml" });
-  res.end(twiml.toString());
+app.post("/addparticpant", (req, res) => {
+  const { phoneNumber } = req.body;
+  console.log("PHONE!!!!!" + phoneNumber);
+  const { TWILIO_ACCOUNTSID } = process.env;
+  const { TWILIO_AUTHTOKEN } = process.env;
+  const client = require("twilio")(TWILIO_ACCOUNTSID, TWILIO_AUTHTOKEN);
+  client.conversations
+    .conversations("CHa36779d0d789479f8320053cc65ad90a")
+    .participants.create({
+      "messagingBinding.address": `+1${phoneNumber}`,
+      "messagingBinding.proxyAddress": "+12058906455"
+    })
+    .then(participant => {
+      client.messages
+        .create({
+          body:
+            "Welcome to the thunderdome!!! We will alert you if there are any available shifts.",
+          to: participant.messagingBinding.address,
+          from: "+12058906455"
+        })
+        .then(message => console.log(message.sid));
+      console.log(participant.sid);
+    })
+    .catch(err => console.log(err));
 });
+app.post("/api/grabshift", (req, res) => {
+  const { companycode, email } = req.body;
+  Company.findOne({ CompanyCode: companycode }).then(({ Employees }) => {
+    const employees = Employees.filter(employees => {
+      if (!employees.boss) {
+        return employees;
+      }
+    });
+    const appts = employees.map(employees => {
+      return employees.schedule.map(appt => {
+        return appt;
+      });
+    });
+    console.log("appt" + appts);
+    res.json(appts);
+  });
+});
+
+app.post("/api/createshift", (req, res) => {});
 
 module.exports = { app };

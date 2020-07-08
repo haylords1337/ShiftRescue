@@ -1,6 +1,12 @@
 import React from "react";
 import "../../styles/style.css";
 import { useGather } from "../../utils/getemploy";
+import { Paper } from "@material-ui/core";
+import {
+  Scheduler,
+  WeekView,
+  AllDayPanel
+} from "@devexpress/dx-react-scheduler-material-ui";
 
 const Schedule = () => {
   const { employee } = useGather();
@@ -17,6 +23,12 @@ const Schedule = () => {
               <p>{employ.email}</p>
               <h5>Phone Number:</h5>
               <p>{employ.phone}</p>
+              <Paper>
+                <Scheduler>
+                  <WeekView startDayHour={""} endDayHour={1} />
+                  <AllDayPanel />
+                </Scheduler>
+              </Paper>
             </li>
           ))}
       </ul>
