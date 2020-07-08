@@ -9,15 +9,15 @@ const { Types } = Schema;
 const appointSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: false
   },
   startDate: {
     type: Date,
-    required: true
+    required: false
   },
   endDate: {
     type: Date,
-    required: true
+    required: false
   },
   id: {
     type: Number,
