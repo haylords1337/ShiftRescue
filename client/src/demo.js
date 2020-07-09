@@ -18,7 +18,7 @@ import {
   AllDayPanel,
   ConfirmationDialog
 } from "@devexpress/dx-react-scheduler-material-ui";
-import { appointments } from "../src/demo-data/appointments";
+
 import { Link } from "react-router-dom";
 import Axios from "axios";
 const ExternalViewSwitcher = ({ currentViewName, onChange }) => (
